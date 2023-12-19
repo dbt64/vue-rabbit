@@ -1,4 +1,17 @@
-<script setup></script>
+<script setup>
+import { getCatgoryAPI } from "@/apis/layout";
+import { onMounted, ref, reactive } from "vue";
+
+const categoryList = ref([]);
+const getCatgory = async () => {
+  const res = await getCatgoryAPI();
+  categoryList.value = res.result;
+};
+
+onMounted(() => {
+  getCatgory();
+});
+</script>
 
 <template>
   <header class="app-header">
@@ -7,12 +20,9 @@
         <RouterLink to="/">小兔鲜</RouterLink>
       </h1>
       <ul class="app-header-nav">
-        <li class="home">
-          <RouterLink to="/">首页</RouterLink>
+        <li class="home" v-for="item in categoryList" :key="item.id">
+          <RouterLink to="/">{{ item.name }}</RouterLink>
         </li>
-        <li><RouterLink to="/">居家</RouterLink></li>
-        <li><RouterLink to="/">美食</RouterLink></li>
-        <li><RouterLink to="/">服饰</RouterLink></li>
       </ul>
       <div class="search">
         <i class="iconfont icon-search"></i>
@@ -86,6 +96,7 @@
     .icon-search {
       font-size: 18px;
       margin-left: 5px;
+      vertical-align: middle;
     }
 
     input {
