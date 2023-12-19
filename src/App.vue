@@ -2,6 +2,11 @@
 
 <template>
   <RouterView />
+  <div class="test">test scss</div>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+.test {
+  color: $helpColor;
+}
+</style>
