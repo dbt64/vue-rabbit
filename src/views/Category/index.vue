@@ -1,18 +1,24 @@
 <script setup>
 import { getCategoryAPI } from "@/apis/category";
 import { onMounted, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, onBeforeRouteUpdate } from "vue-router";
 import { getBannerAPI } from "@/apis/home";
 import GoodsItem from "@/views/Home/components/GoodsItem.vue";
+// 获取数据
 const categoryData = ref({});
 const route = useRoute();
-const getCategory = async () => {
-  const res = await getCategoryAPI(route.params.id);
+const getCategory = async (id = route.params.id) => {
+  const res = await getCategoryAPI(id);
   categoryData.value = res.result;
 };
 
-const bannerList = ref([]);
+onBeforeRouteUpdate((to) => {
+  // 存在的问题：使用最新的路由参数请求最新的分类数据
+  getCategory(to.params.id);
+});
 
+// 获取banner
+const bannerList = ref([]);
 const getBanner = async () => {
   const res = await getBannerAPI({
     distributionSite: "2",
@@ -21,8 +27,8 @@ const getBanner = async () => {
 };
 
 onMounted(() => {
-  getCategory();
   getBanner();
+  getCategory();
 });
 </script>
 
