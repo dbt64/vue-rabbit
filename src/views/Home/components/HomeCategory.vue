@@ -50,6 +50,7 @@ const categoryStore = useCategoryStore();
 
       &:hover {
         background: $xtxColor;
+        transition: all 0.4s;
       }
 
       a {
@@ -108,6 +109,7 @@ const categoryStore = useCategoryStore();
 
               &:hover {
                 background: #e3f9f4;
+                transition: all 0.4s;
               }
 
               img {
