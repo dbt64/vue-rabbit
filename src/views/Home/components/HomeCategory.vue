@@ -64,7 +64,7 @@ const categoryStore = useCategoryStore();
       .layer {
         width: 990px;
         height: 500px;
-        background: rgba(255, 255, 255, 0.8);
+        background: rgba(255, 255, 255);
         position: absolute;
         left: 250px;
         top: 0;
