@@ -8,7 +8,7 @@ export const lazyPlugin = {
       mounted(el, binding) {
         // el: 指令绑定的元素
         const { stop } = useIntersectionObserver(el, ([{ isIntersecting }]) => {
-          console.log(isIntersecting);
+          // console.log(isIntersecting);
           if (isIntersecting) {
             // 代表图片进入了视口区域
 
