@@ -6,9 +6,10 @@ import "@/styles/common.scss";
 import { lazyPlugin } from "@/directives/index";
 import App from "./App.vue";
 import router from "./router";
+import { componentPlugin } from "@/components/index";
 const app = createApp(App);
 app.use(lazyPlugin);
 app.use(createPinia());
 app.use(router);
-
+app.use(componentPlugin);
 app.mount("#app");

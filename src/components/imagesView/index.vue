@@ -4,6 +4,7 @@ import { useMouseInElement } from "@vueuse/core";
 const props = defineProps({
   imageList: {
     type: Array,
+    default: () => [],
   },
 });
 // 小图切换大图显示
