@@ -131,6 +131,7 @@ const addCart = () => {
               <el-input-number
                 v-model="cartStore.count"
                 @change="countChange"
+                :min="1"
               />
               <!-- 按钮组件 -->
               <div>
