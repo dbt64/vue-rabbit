@@ -6,7 +6,7 @@ import LayoutFixed from "./components/LayoutFixed.vue";
 import { onMounted } from "vue";
 // 触发获取导航列表的action
 
-import { useCategoryStore } from "@/stores/categary";
+import { useCategoryStore } from "@/stores/categaryStore";
 
 const categoryStore = useCategoryStore();
 

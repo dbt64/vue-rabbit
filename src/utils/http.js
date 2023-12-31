@@ -1,7 +1,7 @@
 import axios from "axios";
 import "element-plus/theme-chalk/el-message.css";
 import { ElMessage } from "element-plus";
-import { useUserStore } from "@/stores/user";
+import { useUserStore } from "@/stores/userStore";
 // 这里导入router文件夹的router是因为在js文件中，不用useRouter的原因是useRouter只能在vue文件中使用
 import router from "@/router";
 const httpInstance = axios.create({

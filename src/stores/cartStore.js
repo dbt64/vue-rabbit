@@ -1,33 +1,55 @@
 // 封装购物车模块
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
+import { useUserStore } from "./userStore";
+import { insertCartAPI, findNewCartListAPI, delCartAPI } from "@/apis/cart";
 
 export const useCartStore = defineStore(
   "cart",
   () => {
+    const userStore = useUserStore();
+    const isLogin = computed(() => userStore.userInfo.token);
     // 1、定义state - cartList
     const cartList = ref([]);
     const count = ref(1);
     // 定义一个action
-    const addCart = (goods) => {
-      // 添加购物车操作
-      // 以添加过 - count + 1
-      // 没有添加过直接push
-      // 思路：通过匹配传递过来的商品对象中的skuId能不能再cartList中找到，找到了就是添加过
-      const item = cartList.value.find((item) => goods.skuId === item.skuId);
-      if (item) {
-        // 找到了
-        item.count += count.value;
+    const addCart = async (goods) => {
+      if (isLogin.value) {
+        // 登录之后的加入购物车的逻辑
+        await insertCartAPI(goods);
+        updateNewList();
       } else {
-        // 没找到
-        cartList.value.push(goods);
+        // 添加购物车操作
+        // 以添加过 - count + 1
+        // 没有添加过直接push
+        // 思路：通过匹配传递过来的商品对象中的skuId能不能再cartList中找到，找到了就是添加过
+        const item = cartList.value.find((item) => goods.skuId === item.skuId);
+        if (item) {
+          // 找到了
+          item.count += count.value;
+        } else {
+          // 没找到
+          cartList.value.push(goods);
+        }
       }
     };
 
     // 删除购物车
-    const delCart = (skuId) => {
-      const idx = cartList.value.findIndex((item) => skuId === item.skuId);
-      cartList.value.splice(idx, 1);
+    const delCart = async (skuId) => {
+      if (isLogin.value) {
+        // 调用接口实现接口购车的删除功能
+        await delCartAPI([skuId]);
+        updateNewList();
+      } else {
+        const idx = cartList.value.findIndex((item) => skuId === item.skuId);
+        cartList.value.splice(idx, 1);
+      }
+    };
+
+    // 获取最新购物车列表action
+    const updateNewList = async () => {
+      const res = await findNewCartListAPI();
+      cartList.value = res.result;
     };
 
     // 计算属性

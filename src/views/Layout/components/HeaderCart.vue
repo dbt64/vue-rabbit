@@ -12,7 +12,8 @@ const cartStore = useCartStore();
       <div class="list">
         <div class="item" v-for="i in cartStore.cartList" :key="i">
           <RouterLink to="">
-            <img v-img-lazy="i.pictures" alt="" />
+            <img v-if="i.pictures" v-img-lazy="i.pictures" alt="" />
+            <img v-else v-img-lazy="i.picture" alt="" />
             <div class="center">
               <p class="name ellipsis-2">
                 {{ i.name }}
@@ -35,7 +36,12 @@ const cartStore = useCartStore();
           <p>共 {{ cartStore.allCount }} 件商品</p>
           <p>&yen; {{ cartStore.allPrice.toFixed(2) }}</p>
         </div>
-        <el-button size="large" type="primary" @click="$router.push('/cartlist')">去购物车结算</el-button>
+        <el-button
+          size="large"
+          type="primary"
+          @click="$router.push('/cartlist')"
+          >去购物车结算</el-button
+        >
       </div>
     </div>
   </div>
