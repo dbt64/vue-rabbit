@@ -29,7 +29,7 @@ const tabChange = () => {
   reqData.page = 1;
   getGoodList();
 };
-
+// 
 // 加载更多
 const disabled = ref(false);
 const load = async () => {
