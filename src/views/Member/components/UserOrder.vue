@@ -1,7 +1,18 @@
 <script setup>
 import { getUserOrder } from "@/apis/order";
 import { onMounted, reactive, ref } from "vue";
-
+// 创建格式化函数
+const fomartPayState = (payState) => {
+  const stateMap = {
+    1: "待付款",
+    2: "待发货",
+    3: "待收货",
+    4: "待评价",
+    5: "已完成",
+    6: "已取消",
+  };
+  return stateMap[payState];
+};
 // tab列表
 const tabTypes = [
   { name: "all", label: "全部订单" },
@@ -19,16 +30,23 @@ const params = reactive({
   page: 1,
   pageSize: 2,
 });
-
+const total = ref(0);
 const orderList = ref([]);
 const getOrderList = async () => {
   const res = await getUserOrder(params);
   orderList.value = res.result.items;
+  total.value = res.result.counts;
 };
 
 onMounted(() => {
   getOrderList();
 });
+
+// 页数切换
+const pageChange = (page) => {
+  params.page = page;
+  getOrderList();
+};
 </script>
 
 <template>
@@ -78,7 +96,7 @@ onMounted(() => {
                 </ul>
               </div>
               <div class="column state">
-                <p>{{ order.orderState }}</p>
+                <p>{{ fomartPayState(order.orderState) }}</p>
                 <p v-if="order.orderState === 3">
                   <a href="javascript:;" class="green">查看物流</a>
                 </p>
@@ -124,7 +142,13 @@ onMounted(() => {
           </div>
           <!-- 分页 -->
           <div class="pagination-container">
-            <el-pagination background layout="prev, pager, next" />
+            <el-pagination
+              :page-size="params.pageSize"
+              :total="total"
+              @current-change="pageChange"
+              background
+              layout="prev, pager, next"
+            />
           </div>
         </div>
       </div>
