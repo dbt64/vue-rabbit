@@ -4,6 +4,8 @@ import { ElMessage } from "element-plus";
 import { useUserStore } from "@/stores/userStore";
 // 这里导入router文件夹的router是因为在js文件中，不用useRouter的原因是useRouter只能在vue文件中使用
 import router from "@/router";
+import nProgress from "nprogress";
+import "nprogress/nprogress.css";
 const httpInstance = axios.create({
   baseURL: "http://pcapi-xiaotuxian-front-devtest.itheima.net",
   timeout: 5000,
@@ -12,6 +14,7 @@ const httpInstance = axios.create({
 // axios请求拦截器
 httpInstance.interceptors.request.use(
   (config) => {
+    nProgress.start();
     const userStore = useUserStore();
     // 从pinia获取token数据
     const token = userStore.userInfo.token;
@@ -27,7 +30,10 @@ httpInstance.interceptors.request.use(
 
 // axios响应式拦截器
 httpInstance.interceptors.response.use(
-  (res) => res.data,
+  (res) => {
+    nProgress.done();
+    return res.data;
+  },
   (e) => {
     const userStore = useUserStore();
     // 统一错误提示
