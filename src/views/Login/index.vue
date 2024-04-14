@@ -8,8 +8,8 @@ import { useUserStore } from "@/stores/userStore";
 const userStore = useUserStore();
 
 const form = reactive({
-  account: "",
-  password: "",
+  account: "z1234",
+  password: "123456",
   agree: false,
 });
 
